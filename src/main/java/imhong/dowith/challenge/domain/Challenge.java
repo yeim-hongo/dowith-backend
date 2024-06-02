@@ -54,6 +54,9 @@ public class Challenge {
     private ChallengeStatus status;
 
     @Column(nullable = false)
+    private Integer participantsCount;
+
+    @Column(nullable = false)
     private Integer minParticipantsCount;
 
     @Column(nullable = false)
@@ -96,6 +99,7 @@ public class Challenge {
             startDate,
             endDate,
             ChallengeStatus.NOT_STARTED,
+            1,
             minParticipantsCount,
             maxParticipantsCount,
             leaderMemberId,
@@ -140,5 +144,13 @@ public class Challenge {
         if (minParticipantsCount > maxParticipantsCount) {
             throw new IllegalArgumentException("최소 참가자 수는 최대 참가자 수보다 작아야 합니다.");
         }
+    }
+
+    public boolean isFull() {
+        return participantsCount >= maxParticipantsCount;
+    }
+
+    public void increaseParticipantsCount() {
+        participantsCount++;
     }
 }
