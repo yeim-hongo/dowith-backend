@@ -8,35 +8,24 @@ import imhong.dowith.challenge.domain.Challenge;
 import imhong.dowith.challenge.domain.ChallengeRepository;
 import imhong.dowith.challenge.domain.ChallengeStatus;
 import imhong.dowith.challenge.dto.ChallengeCreateRequest;
+import imhong.dowith.common.ControllerTest;
 import imhong.dowith.common.ImageFileGenerator;
 import imhong.dowith.common.ResponseHeaderHelper;
 import imhong.dowith.member.domain.Member;
 import imhong.dowith.member.domain.MemberRepository;
-import io.restassured.RestAssured;
 import io.restassured.response.Response;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayNameGeneration;
-import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
-import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-@SuppressWarnings("NonAsciiCharacters")
-@SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
-@DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
-class ChallengeControllerTest {
-
-    @LocalServerPort
-    private int port;
+class ChallengeControllerTest extends ControllerTest {
 
     @Autowired
     private ChallengeRepository challengeRepository;
@@ -46,11 +35,6 @@ class ChallengeControllerTest {
 
     @Autowired
     private ObjectMapper objectMapper;
-
-    @BeforeEach
-    public void setPort() {
-        RestAssured.port = port;
-    }
 
     @BeforeEach
     public void setUp() {
