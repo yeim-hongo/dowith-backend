@@ -7,6 +7,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import imhong.dowith.challenge.domain.Challenge;
 import imhong.dowith.challenge.domain.ChallengeRepository;
 import imhong.dowith.challenge.domain.ChallengeStatus;
+import imhong.dowith.challenge.domain.MemberChallenge;
+import imhong.dowith.challenge.domain.MemberChallengeRepository;
 import imhong.dowith.challenge.dto.ChallengeCreateRequest;
 import imhong.dowith.common.ControllerTest;
 import imhong.dowith.common.ImageFileGenerator;
@@ -32,6 +34,9 @@ class ChallengeControllerTest extends ControllerTest {
 
     @Autowired
     private MemberRepository memberRepository;
+
+    @Autowired
+    private MemberChallengeRepository memberChallengeRepository;
 
     @Autowired
     private ObjectMapper objectMapper;
@@ -71,8 +76,6 @@ class ChallengeControllerTest extends ControllerTest {
         // when
         Response response = ChallengeControllerSteps.requestCreateChallenge(
             request,
-            thumbnail,
-            images,
             objectMapper.writeValueAsString(leader)
         );
 
@@ -92,5 +95,45 @@ class ChallengeControllerTest extends ControllerTest {
                 softly.assertThat(challenge.getImageUrls()).hasSize(images.size());
             }
         );
+    }
+
+    @Test
+    void participate() {
+        // given
+        Member leader = memberRepository.findById(1L).get();
+        Challenge challenge = challengeRepository.save(Challenge.create(
+            "create challenge",
+            "description",
+            "verificationRule",
+            "thumbnailUrl",
+            LocalDate.now().plusDays(1),
+            LocalDate.now().plusDays(10),
+            2,
+            10,
+            leader.getId()
+        ));
+        Member participant = memberRepository.save(Member.create(
+            "participant",
+            "nickname2",
+            "password2"
+        ));
+
+        // when
+        Response response = ChallengeControllerSteps.requestParticipate(
+            participant,
+            challenge.getId()
+        );
+
+        // then
+        assertSoftly(softly -> {
+            softly.assertThat(response.statusCode()).isEqualTo(HttpStatus.NO_CONTENT.value());
+            softly.assertThat(
+                    challengeRepository.findById(challenge.getId()).get().getParticipantsCount())
+                .isEqualTo(2);
+
+            MemberChallenge memberChallenge = memberChallengeRepository.findByMemberId(
+                participant.getId()).get();
+            softly.assertThat(memberChallenge.getChallengeId()).isEqualTo(challenge.getId());
+        });
     }
 }

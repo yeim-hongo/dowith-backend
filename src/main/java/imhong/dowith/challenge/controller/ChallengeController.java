@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
@@ -32,10 +33,11 @@ public class ChallengeController {
 
     @PostMapping("/{challengeId}/participants")
     public ResponseEntity<Void> participate(
-        Member participant,
+        // TODO 인가 추가 후 변경
+        @RequestBody Member participant,
         @PathVariable Long challengeId
     ) {
         challengeService.participate(participant, challengeId);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.noContent().build();
     }
 }
