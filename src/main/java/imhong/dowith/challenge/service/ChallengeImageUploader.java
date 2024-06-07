@@ -26,7 +26,7 @@ public class ChallengeImageUploader {
         }
 
         return imageUploader.uploadAll(images).stream()
-            .map(imageUrl -> Image.of(imageUrl, challenge))
+            .map(imageUrl -> Image.create(imageUrl, challenge))
             .toList();
     }
 }

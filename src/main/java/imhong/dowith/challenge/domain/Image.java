@@ -28,7 +28,7 @@ public class Image {
     @ManyToOne(optional = false)
     private Challenge challenge;
 
-    public static Image of(String url, Challenge challenge) {
+    public static Image create(String url, Challenge challenge) {
         return new Image(null, url, challenge);
     }
 }
