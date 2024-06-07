@@ -22,7 +22,8 @@ public class ChallengeImageUploader {
 
     public List<Image> uploadImages(List<MultipartFile> images, Challenge challenge) {
         if (images.size() > MAX_IMAGE_COUNT) {
-            throw new IllegalArgumentException("이미지는 최대 5개까지 업로드할 수 있습니다.");
+            throw new IllegalArgumentException(
+                String.format("이미지는 최대 %d개까지 업로드할 수 있습니다.", MAX_IMAGE_COUNT));
         }
 
         return imageUploader.uploadAll(images).stream()
