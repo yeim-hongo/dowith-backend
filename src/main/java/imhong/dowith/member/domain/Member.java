@@ -1,6 +1,7 @@
 package imhong.dowith.member.domain;
 
 import static jakarta.persistence.GenerationType.IDENTITY;
+import static lombok.AccessLevel.PRIVATE;
 import static lombok.AccessLevel.PROTECTED;
 
 import jakarta.persistence.Entity;
@@ -15,7 +16,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @Getter
 @Entity
 @NoArgsConstructor(access = PROTECTED)
-@AllArgsConstructor
+@AllArgsConstructor(access = PRIVATE)
 @EntityListeners(AuditingEntityListener.class)
 public class Member {
 

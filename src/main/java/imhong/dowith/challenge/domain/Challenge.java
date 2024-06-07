@@ -2,6 +2,7 @@ package imhong.dowith.challenge.domain;
 
 import static jakarta.persistence.EnumType.STRING;
 import static jakarta.persistence.GenerationType.IDENTITY;
+import static lombok.AccessLevel.PRIVATE;
 import static lombok.AccessLevel.PROTECTED;
 
 import jakarta.persistence.Column;
@@ -24,7 +25,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @Getter
 @Entity
 @NoArgsConstructor(access = PROTECTED)
-@AllArgsConstructor
+@AllArgsConstructor(access = PRIVATE)
 @EntityListeners(AuditingEntityListener.class)
 public class Challenge {
 
