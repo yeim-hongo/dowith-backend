@@ -113,12 +113,8 @@ public class Challenge {
     }
 
     private static void validateDuration(LocalDate startDate, LocalDate endDate) {
-        if (startDate.isAfter(endDate)) {
-            throw new IllegalArgumentException("시작 날짜는 종료 날짜보다 빨라야 합니다.");
-        }
-
-        if (startDate.plusDays(1).isAfter(endDate)) {
-            throw new IllegalArgumentException("챌린지 기간은 1일 이상이어야 합니다.");
+        if (endDate.isBefore(startDate)) {
+            throw new IllegalArgumentException("챌린지 종료 날짜는 시작 날짜 보다 빠를 수 없습니다.");
         }
 
         if (startDate.plusWeeks(4).isBefore(endDate)) {
@@ -126,7 +122,7 @@ public class Challenge {
         }
 
         if (startDate.isBefore(LocalDate.now())) {
-            throw new IllegalArgumentException("챌린지 시작 날짜는 현재 날짜보다 빨라야 합니다.");
+            throw new IllegalArgumentException("챌린지 시작 날짜는 현재 날짜보다 빠를 수 없습니다.");
         }
 
         if (startDate.isAfter(LocalDate.now().plusWeeks(4))) {
