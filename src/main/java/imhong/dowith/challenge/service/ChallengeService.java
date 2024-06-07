@@ -2,11 +2,11 @@ package imhong.dowith.challenge.service;
 
 
 import imhong.dowith.challenge.domain.Challenge;
-import imhong.dowith.challenge.domain.ChallengeRepository;
-import imhong.dowith.challenge.domain.ImageRepository;
 import imhong.dowith.challenge.domain.MemberChallenge;
-import imhong.dowith.challenge.domain.MemberChallengeRepository;
 import imhong.dowith.challenge.dto.ChallengeCreateRequest;
+import imhong.dowith.challenge.repository.ChallengeRepository;
+import imhong.dowith.challenge.repository.ImageRepository;
+import imhong.dowith.challenge.repository.MemberChallengeRepository;
 import imhong.dowith.member.domain.Member;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

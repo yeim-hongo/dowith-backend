@@ -1,6 +1,7 @@
 package imhong.dowith.challenge.domain;
 
 import static jakarta.persistence.GenerationType.IDENTITY;
+import static lombok.AccessLevel.PRIVATE;
 import static lombok.AccessLevel.PROTECTED;
 
 import jakarta.persistence.Column;
