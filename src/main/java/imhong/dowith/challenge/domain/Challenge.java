@@ -1,10 +1,18 @@
 package imhong.dowith.challenge.domain;
 
+import static imhong.dowith.challenge.exception.ChallengeExceptionType.CHALLENGE_ALREADY_IN_PROGRESS;
+import static imhong.dowith.challenge.exception.ChallengeExceptionType.END_DATE_BEFORE_START_DATE;
+import static imhong.dowith.challenge.exception.ChallengeExceptionType.INVALID_DURATION;
+import static imhong.dowith.challenge.exception.ChallengeExceptionType.INVALID_MAX_PARTICIPANTS_COUNT;
+import static imhong.dowith.challenge.exception.ChallengeExceptionType.INVALID_MIN_PARTICIPANTS_COUNT;
+import static imhong.dowith.challenge.exception.ChallengeExceptionType.MIN_PARTICIPANTS_EXCEED_MAX_PARTICIPANTS;
+import static imhong.dowith.challenge.exception.ChallengeExceptionType.START_DATE_BEFORE_TODAY;
 import static jakarta.persistence.EnumType.STRING;
 import static jakarta.persistence.GenerationType.IDENTITY;
 import static lombok.AccessLevel.PRIVATE;
 import static lombok.AccessLevel.PROTECTED;
 
+import imhong.dowith.challenge.exception.ChallengeException;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
@@ -115,34 +123,34 @@ public class Challenge {
 
     private static void validateDuration(LocalDate startDate, LocalDate endDate) {
         if (endDate.isBefore(startDate)) {
-            throw new IllegalArgumentException("챌린지 종료 날짜는 시작 날짜 보다 빠를 수 없습니다.");
+            throw new ChallengeException(END_DATE_BEFORE_START_DATE);
         }
 
         if (startDate.plusWeeks(4).isBefore(endDate)) {
-            throw new IllegalArgumentException("챌린지 기간은 4주 이하이어야 합니다.");
+            throw new ChallengeException(INVALID_DURATION);
         }
 
         if (startDate.isBefore(LocalDate.now())) {
-            throw new IllegalArgumentException("챌린지 시작 날짜는 현재 날짜보다 빠를 수 없습니다.");
+            throw new ChallengeException(START_DATE_BEFORE_TODAY);
         }
 
         if (startDate.isAfter(LocalDate.now().plusWeeks(4))) {
-            throw new IllegalArgumentException("챌린지 시작 날짜는 현재 날짜로부터 4주 이후로 설정할 수 없습니다.");
+            throw new ChallengeException(CHALLENGE_ALREADY_IN_PROGRESS);
         }
     }
 
     private static void validateParticipantsCount(Integer minParticipantsCount,
         Integer maxParticipantsCount) {
         if (minParticipantsCount < 1) {
-            throw new IllegalArgumentException("최소 참가자 수는 1명 이상이어야 합니다.");
+            throw new ChallengeException(INVALID_MIN_PARTICIPANTS_COUNT);
         }
 
         if (maxParticipantsCount > 100) {
-            throw new IllegalArgumentException("최대 참가자 수는 100명 이하이어야 합니다.");
+            throw new ChallengeException(INVALID_MAX_PARTICIPANTS_COUNT);
         }
 
         if (minParticipantsCount > maxParticipantsCount) {
-            throw new IllegalArgumentException("최소 참가자 수는 최대 참가자 수보다 작아야 합니다.");
+            throw new ChallengeException(MIN_PARTICIPANTS_EXCEED_MAX_PARTICIPANTS);
         }
     }
 

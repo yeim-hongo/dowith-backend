@@ -1,7 +1,10 @@
 package imhong.dowith.challenge.service;
 
+import static imhong.dowith.challenge.exception.ChallengeExceptionType.IMAGES_SIZE_EXCEEDED;
+
 import imhong.dowith.challenge.domain.Challenge;
 import imhong.dowith.challenge.domain.Image;
+import imhong.dowith.challenge.exception.ChallengeException;
 import imhong.dowith.image.ImageUploader;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -12,7 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 @RequiredArgsConstructor
 public class ChallengeImageUploader {
 
-    private final static int MAX_IMAGE_COUNT = 5;
+    public final static int MAX_IMAGE_COUNT = 5;
 
     private final ImageUploader imageUploader;
 
@@ -22,8 +25,7 @@ public class ChallengeImageUploader {
 
     public List<Image> uploadImages(List<MultipartFile> images, Challenge challenge) {
         if (images.size() > MAX_IMAGE_COUNT) {
-            throw new IllegalArgumentException(
-                String.format("이미지는 최대 %d개까지 업로드할 수 있습니다.", MAX_IMAGE_COUNT));
+            throw new ChallengeException(IMAGES_SIZE_EXCEEDED);
         }
 
         return imageUploader.uploadAll(images).stream()

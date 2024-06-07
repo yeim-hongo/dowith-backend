@@ -1,9 +1,13 @@
 package imhong.dowith.challenge.service;
 
 
+import static imhong.dowith.challenge.exception.ChallengeExceptionType.CHALLENGE_NOT_FOUND;
+import static imhong.dowith.challenge.exception.ChallengeExceptionType.PARTICIPANTS_COUNT_FULL;
+
 import imhong.dowith.challenge.domain.Challenge;
 import imhong.dowith.challenge.domain.MemberChallenge;
 import imhong.dowith.challenge.dto.ChallengeCreateRequest;
+import imhong.dowith.challenge.exception.ChallengeException;
 import imhong.dowith.challenge.repository.ChallengeRepository;
 import imhong.dowith.challenge.repository.ImageRepository;
 import imhong.dowith.challenge.repository.MemberChallengeRepository;
@@ -43,10 +47,10 @@ public class ChallengeService {
 
     public void participate(Member participant, Long challengeId) {
         Challenge challenge = challengeRepository.findById(challengeId)
-            .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 챌린지입니다."));
+            .orElseThrow(() -> new ChallengeException(CHALLENGE_NOT_FOUND));
 
         if (challenge.isFull()) {
-            throw new IllegalArgumentException("챌린지 인원이 가득 찼습니다.");
+            throw new ChallengeException(PARTICIPANTS_COUNT_FULL);
         }
         challenge.increaseParticipantsCount();
         challengeRepository.save(challenge);
