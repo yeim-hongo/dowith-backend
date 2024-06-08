@@ -27,6 +27,7 @@ public class ChallengeService {
     private final ChallengeImageUploader imageUploader;
 
     public Long createChallenge(Member leader, ChallengeCreateRequest request) {
+        // TODO ImageUploader를 트랜잭션에서 분리
         Challenge challenge = Challenge.create(
             request.getTitle(),
             request.getDescription(),
