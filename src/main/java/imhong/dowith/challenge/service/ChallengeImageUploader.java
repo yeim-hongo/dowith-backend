@@ -7,17 +7,17 @@ import imhong.dowith.challenge.domain.Image;
 import imhong.dowith.challenge.exception.ChallengeException;
 import imhong.dowith.image.ImageUploader;
 import java.util.List;
-import lombok.RequiredArgsConstructor;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 @Component
-@RequiredArgsConstructor
+@AllArgsConstructor
 public class ChallengeImageUploader {
 
     public final static int MAX_IMAGE_COUNT = 5;
 
-    private final ImageUploader imageUploader;
+    private ImageUploader imageUploader;
 
     public String uploadThumbnail(MultipartFile thumbnail) {
         return imageUploader.upload(thumbnail);

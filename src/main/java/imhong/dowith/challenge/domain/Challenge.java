@@ -1,6 +1,6 @@
 package imhong.dowith.challenge.domain;
 
-import static imhong.dowith.challenge.exception.ChallengeExceptionType.CHALLENGE_ALREADY_IN_PROGRESS;
+import static imhong.dowith.challenge.exception.ChallengeExceptionType.CHALLENGE_START_DATE_TOO_FAR;
 import static imhong.dowith.challenge.exception.ChallengeExceptionType.END_DATE_BEFORE_START_DATE;
 import static imhong.dowith.challenge.exception.ChallengeExceptionType.INVALID_DURATION;
 import static imhong.dowith.challenge.exception.ChallengeExceptionType.INVALID_MAX_PARTICIPANTS_COUNT;
@@ -9,7 +9,6 @@ import static imhong.dowith.challenge.exception.ChallengeExceptionType.MIN_PARTI
 import static imhong.dowith.challenge.exception.ChallengeExceptionType.START_DATE_BEFORE_TODAY;
 import static jakarta.persistence.EnumType.STRING;
 import static jakarta.persistence.GenerationType.IDENTITY;
-import static lombok.AccessLevel.PRIVATE;
 import static lombok.AccessLevel.PROTECTED;
 
 import imhong.dowith.challenge.exception.ChallengeException;
@@ -33,7 +32,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @Getter
 @Entity
 @NoArgsConstructor(access = PROTECTED)
-@AllArgsConstructor(access = PRIVATE)
+@AllArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
 public class Challenge {
 

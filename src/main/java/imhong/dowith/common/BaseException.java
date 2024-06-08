@@ -11,6 +11,10 @@ public abstract class BaseException extends RuntimeException {
         this.baseExceptionType = baseExceptionType;
     }
 
+    public BaseExceptionType getExceptionType() {
+        return baseExceptionType;
+    }
+
     public HttpStatus getHttpStatus() {
         return baseExceptionType.getHttpStatus();
     }
