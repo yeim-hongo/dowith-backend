@@ -135,7 +135,7 @@ public class Challenge {
         }
 
         if (startDate.isAfter(LocalDate.now().plusWeeks(4))) {
-            throw new ChallengeException(CHALLENGE_ALREADY_IN_PROGRESS);
+            throw new ChallengeException(CHALLENGE_START_DATE_TOO_FAR);
         }
     }
 

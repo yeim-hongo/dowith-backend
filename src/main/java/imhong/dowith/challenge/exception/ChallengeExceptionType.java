@@ -13,7 +13,7 @@ public enum ChallengeExceptionType implements BaseExceptionType {
     END_DATE_BEFORE_START_DATE(BAD_REQUEST, "C03", "챌린지 종료 날짜는 시작 날짜 보다 빠를 수 없습니다."),
     INVALID_DURATION(BAD_REQUEST, "C04", "챌린지 기간은 4주 이하이어야 합니다."),
     START_DATE_BEFORE_TODAY(BAD_REQUEST, "C05", "챌린지 시작 날짜는 현재 날짜보다 빠를 수 없습니다."),
-    CHALLENGE_ALREADY_IN_PROGRESS(BAD_REQUEST, "C06", "챌린지 시작 날짜는 현재 날짜로부터 4주 이후로 설정할 수 없습니다."),
+    CHALLENGE_START_DATE_TOO_FAR(BAD_REQUEST, "C06", "챌린지 시작 날짜는 현재 날짜로부터 4주 이후로 설정할 수 없습니다."),
     INVALID_MIN_PARTICIPANTS_COUNT(BAD_REQUEST, "C07", "최소 참가자 수는 1명 이상이어야 합니다."),
     INVALID_MAX_PARTICIPANTS_COUNT(BAD_REQUEST, "C08", "최대 참가자 수는 100명 이하이어야 합니다."),
     MIN_PARTICIPANTS_EXCEED_MAX_PARTICIPANTS(BAD_REQUEST, "C09", "최소 참가자 수는 최대 참가자 수보다 작아야 합니다."),
