@@ -1,8 +1,10 @@
 package imhong.dowith.auth.service;
 
 import static imhong.dowith.auth.enums.AuthExceptionType.NICKNAME_DUPLICATED;
+import static imhong.dowith.auth.enums.AuthExceptionType.NOT_AUTHORIZED;
 import static imhong.dowith.auth.enums.AuthExceptionType.USERID_DUPLICATED;
 
+import imhong.dowith.auth.dto.LoginRequest;
 import imhong.dowith.auth.dto.RegisterRequest;
 import imhong.dowith.common.CustomException;
 import imhong.dowith.member.domain.Member;
@@ -34,6 +36,17 @@ public class AuthService {
         String encodedPassword = passwordEncoder.encode(request.getPassword());
         Member member = Member.create(request.getUserId(), request.getNickname(), encodedPassword);
         memberRepository.save(member);
+
+        return jwtTokenProvider.generateToken(member.getUserId());
+    }
+
+    public String login(LoginRequest request) {
+        Member member = memberRepository.findByUserId(request.getUserId())
+            .orElseThrow(() -> new CustomException(NOT_AUTHORIZED));
+
+        if (!passwordEncoder.matches(request.getPassword(), member.getPassword())) {
+            throw new CustomException(NOT_AUTHORIZED);
+        }
 
         return jwtTokenProvider.generateToken(member.getUserId());
     }

@@ -1,5 +1,6 @@
 package imhong.dowith.auth.controller;
 
+import imhong.dowith.auth.dto.LoginRequest;
 import imhong.dowith.auth.dto.RegisterRequest;
 import imhong.dowith.auth.dto.TokenResponse;
 import imhong.dowith.auth.service.AuthService;
@@ -21,6 +22,12 @@ public class AuthController {
     @PostMapping("/register")
     public ResponseEntity<TokenResponse> register(@Valid @RequestBody RegisterRequest request) {
         String accessToken = authService.register(request);
+        return ResponseEntity.ok(new TokenResponse(accessToken));
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<TokenResponse> login(@Valid @RequestBody LoginRequest request) {
+        String accessToken = authService.login(request);
         return ResponseEntity.ok(new TokenResponse(accessToken));
     }
 }
