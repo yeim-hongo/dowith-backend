@@ -1,6 +1,6 @@
 package imhong.dowith.challenge.service;
 
-import static imhong.dowith.challenge.exception.ChallengeExceptionType.IMAGES_SIZE_EXCEEDED;
+import static imhong.dowith.challenge.enums.ChallengeExceptionType.IMAGES_SIZE_EXCEEDED;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
@@ -8,7 +8,7 @@ import static org.assertj.core.api.SoftAssertions.assertSoftly;
 import imhong.dowith.challenge.domain.Challenge;
 import imhong.dowith.challenge.domain.ChallengeStatus;
 import imhong.dowith.challenge.domain.Image;
-import imhong.dowith.challenge.exception.ChallengeException;
+import imhong.dowith.common.CustomException;
 import imhong.dowith.common.FakeImageUploader;
 import imhong.dowith.common.ImageFileGenerator;
 import java.time.LocalDate;
@@ -98,7 +98,7 @@ class ChallengeImageUploaderTest {
             // when & then
             assertThatThrownBy(() -> challengeImageUploader.uploadImages(images, challenge))
                 .satisfies(exception -> {
-                    ChallengeException challengeException = (ChallengeException) exception;
+                    CustomException challengeException = (CustomException) exception;
                     assertThat(challengeException.getExceptionType()).isEqualTo(
                         IMAGES_SIZE_EXCEEDED);
                 });

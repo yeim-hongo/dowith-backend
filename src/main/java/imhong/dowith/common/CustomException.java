@@ -2,11 +2,11 @@ package imhong.dowith.common;
 
 import org.springframework.http.HttpStatus;
 
-public abstract class BaseException extends RuntimeException {
+public class CustomException extends RuntimeException {
 
-    private BaseExceptionType baseExceptionType;
+    private final BaseExceptionType baseExceptionType;
 
-    public BaseException(BaseExceptionType baseExceptionType) {
+    public CustomException(BaseExceptionType baseExceptionType) {
         super(baseExceptionType.getMessage());
         this.baseExceptionType = baseExceptionType;
     }

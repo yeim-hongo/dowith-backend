@@ -1,14 +1,14 @@
 package imhong.dowith.challenge.service;
 
-import static imhong.dowith.challenge.exception.ChallengeExceptionType.CHALLENGE_NOT_FOUND;
-import static imhong.dowith.challenge.exception.ChallengeExceptionType.CHALLENGE_START_DATE_TOO_FAR;
-import static imhong.dowith.challenge.exception.ChallengeExceptionType.END_DATE_BEFORE_START_DATE;
-import static imhong.dowith.challenge.exception.ChallengeExceptionType.INVALID_DURATION;
-import static imhong.dowith.challenge.exception.ChallengeExceptionType.INVALID_MAX_PARTICIPANTS_COUNT;
-import static imhong.dowith.challenge.exception.ChallengeExceptionType.INVALID_MIN_PARTICIPANTS_COUNT;
-import static imhong.dowith.challenge.exception.ChallengeExceptionType.MIN_PARTICIPANTS_EXCEED_MAX_PARTICIPANTS;
-import static imhong.dowith.challenge.exception.ChallengeExceptionType.PARTICIPANTS_COUNT_FULL;
-import static imhong.dowith.challenge.exception.ChallengeExceptionType.START_DATE_BEFORE_TODAY;
+import static imhong.dowith.challenge.enums.ChallengeExceptionType.CHALLENGE_NOT_FOUND;
+import static imhong.dowith.challenge.enums.ChallengeExceptionType.CHALLENGE_START_DATE_TOO_FAR;
+import static imhong.dowith.challenge.enums.ChallengeExceptionType.END_DATE_BEFORE_START_DATE;
+import static imhong.dowith.challenge.enums.ChallengeExceptionType.INVALID_DURATION;
+import static imhong.dowith.challenge.enums.ChallengeExceptionType.INVALID_MAX_PARTICIPANTS_COUNT;
+import static imhong.dowith.challenge.enums.ChallengeExceptionType.INVALID_MIN_PARTICIPANTS_COUNT;
+import static imhong.dowith.challenge.enums.ChallengeExceptionType.MIN_PARTICIPANTS_EXCEED_MAX_PARTICIPANTS;
+import static imhong.dowith.challenge.enums.ChallengeExceptionType.PARTICIPANTS_COUNT_FULL;
+import static imhong.dowith.challenge.enums.ChallengeExceptionType.START_DATE_BEFORE_TODAY;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
@@ -19,10 +19,10 @@ import static org.mockito.Mockito.verify;
 import imhong.dowith.challenge.domain.Challenge;
 import imhong.dowith.challenge.domain.ChallengeStatus;
 import imhong.dowith.challenge.dto.ChallengeCreateRequest;
-import imhong.dowith.challenge.exception.ChallengeException;
 import imhong.dowith.challenge.repository.ChallengeRepository;
 import imhong.dowith.challenge.repository.ImageRepository;
 import imhong.dowith.challenge.repository.MemberChallengeRepository;
+import imhong.dowith.common.CustomException;
 import imhong.dowith.common.FakeImageUploader;
 import imhong.dowith.common.ImageFileGenerator;
 import imhong.dowith.member.domain.Member;
@@ -141,7 +141,7 @@ class ChallengeServiceTest {
             // when & then
             assertThatThrownBy(() -> challengeService.createChallenge(member, request))
                 .satisfies(exception -> {
-                    ChallengeException challengeException = (ChallengeException) exception;
+                    CustomException challengeException = (CustomException) exception;
                     assertThat(challengeException.getExceptionType()).isEqualTo(
                         END_DATE_BEFORE_START_DATE);
                 });
@@ -165,7 +165,7 @@ class ChallengeServiceTest {
             // when & then
             assertThatThrownBy(() -> challengeService.createChallenge(member, request))
                 .satisfies(exception -> {
-                    ChallengeException challengeException = (ChallengeException) exception;
+                    CustomException challengeException = (CustomException) exception;
                     assertThat(challengeException.getExceptionType()).isEqualTo(
                         INVALID_DURATION);
                 });
@@ -189,7 +189,7 @@ class ChallengeServiceTest {
             // when & then
             assertThatThrownBy(() -> challengeService.createChallenge(member, request))
                 .satisfies(exception -> {
-                    ChallengeException challengeException = (ChallengeException) exception;
+                    CustomException challengeException = (CustomException) exception;
                     assertThat(challengeException.getExceptionType()).isEqualTo(
                         START_DATE_BEFORE_TODAY);
                 });
@@ -213,7 +213,7 @@ class ChallengeServiceTest {
             // when & then
             assertThatThrownBy(() -> challengeService.createChallenge(member, request))
                 .satisfies(exception -> {
-                    ChallengeException challengeException = (ChallengeException) exception;
+                    CustomException challengeException = (CustomException) exception;
                     assertThat(challengeException.getExceptionType()).isEqualTo(
                         CHALLENGE_START_DATE_TOO_FAR);
                 });
@@ -237,7 +237,7 @@ class ChallengeServiceTest {
             // when & then
             assertThatThrownBy(() -> challengeService.createChallenge(member, request))
                 .satisfies(exception -> {
-                    ChallengeException challengeException = (ChallengeException) exception;
+                    CustomException challengeException = (CustomException) exception;
                     assertThat(challengeException.getExceptionType()).isEqualTo(
                         INVALID_MIN_PARTICIPANTS_COUNT);
                 });
@@ -261,7 +261,7 @@ class ChallengeServiceTest {
             // when & then
             assertThatThrownBy(() -> challengeService.createChallenge(member, request))
                 .satisfies(exception -> {
-                    ChallengeException challengeException = (ChallengeException) exception;
+                    CustomException challengeException = (CustomException) exception;
                     assertThat(challengeException.getExceptionType()).isEqualTo(
                         INVALID_MAX_PARTICIPANTS_COUNT);
                 });
@@ -285,7 +285,7 @@ class ChallengeServiceTest {
             // when & then
             assertThatThrownBy(() -> challengeService.createChallenge(member, request))
                 .satisfies(exception -> {
-                    ChallengeException challengeException = (ChallengeException) exception;
+                    CustomException challengeException = (CustomException) exception;
                     assertThat(challengeException.getExceptionType()).isEqualTo(
                         MIN_PARTICIPANTS_EXCEED_MAX_PARTICIPANTS);
                 });
@@ -361,7 +361,7 @@ class ChallengeServiceTest {
             // when & then
             assertThatThrownBy(() -> challengeService.participate(participant, challenge.getId()))
                 .satisfies(exception -> {
-                    ChallengeException challengeException = (ChallengeException) exception;
+                    CustomException challengeException = (CustomException) exception;
                     assertThat(challengeException.getExceptionType()).isEqualTo(
                         PARTICIPANTS_COUNT_FULL);
                 });
@@ -375,7 +375,7 @@ class ChallengeServiceTest {
             // when & then
             assertThatThrownBy(() -> challengeService.participate(participant, 1L))
                 .satisfies(exception -> {
-                    ChallengeException challengeException = (ChallengeException) exception;
+                    CustomException challengeException = (CustomException) exception;
                     assertThat(challengeException.getExceptionType()).isEqualTo(
                         CHALLENGE_NOT_FOUND);
                 });

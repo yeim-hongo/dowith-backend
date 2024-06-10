@@ -1,16 +1,16 @@
 package imhong.dowith.challenge.service;
 
 
-import static imhong.dowith.challenge.exception.ChallengeExceptionType.CHALLENGE_NOT_FOUND;
-import static imhong.dowith.challenge.exception.ChallengeExceptionType.PARTICIPANTS_COUNT_FULL;
+import static imhong.dowith.challenge.enums.ChallengeExceptionType.CHALLENGE_NOT_FOUND;
+import static imhong.dowith.challenge.enums.ChallengeExceptionType.PARTICIPANTS_COUNT_FULL;
 
 import imhong.dowith.challenge.domain.Challenge;
 import imhong.dowith.challenge.domain.MemberChallenge;
 import imhong.dowith.challenge.dto.ChallengeCreateRequest;
-import imhong.dowith.challenge.exception.ChallengeException;
 import imhong.dowith.challenge.repository.ChallengeRepository;
 import imhong.dowith.challenge.repository.ImageRepository;
 import imhong.dowith.challenge.repository.MemberChallengeRepository;
+import imhong.dowith.common.CustomException;
 import imhong.dowith.member.domain.Member;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -48,10 +48,10 @@ public class ChallengeService {
 
     public void participate(Member participant, Long challengeId) {
         Challenge challenge = challengeRepository.findById(challengeId)
-            .orElseThrow(() -> new ChallengeException(CHALLENGE_NOT_FOUND));
+            .orElseThrow(() -> new CustomException(CHALLENGE_NOT_FOUND));
 
         if (challenge.isFull()) {
-            throw new ChallengeException(PARTICIPANTS_COUNT_FULL);
+            throw new CustomException(PARTICIPANTS_COUNT_FULL);
         }
         challenge.increaseParticipantsCount();
         challengeRepository.save(challenge);

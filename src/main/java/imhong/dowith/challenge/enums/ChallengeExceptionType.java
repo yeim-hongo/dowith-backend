@@ -1,4 +1,4 @@
-package imhong.dowith.challenge.exception;
+package imhong.dowith.challenge.enums;
 
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
