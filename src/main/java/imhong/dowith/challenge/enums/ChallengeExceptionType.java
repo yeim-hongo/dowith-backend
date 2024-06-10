@@ -5,8 +5,12 @@ import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 import imhong.dowith.challenge.service.ChallengeImageUploader;
 import imhong.dowith.common.BaseExceptionType;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 
+@Getter
+@RequiredArgsConstructor
 public enum ChallengeExceptionType implements BaseExceptionType {
     CHALLENGE_NOT_FOUND(NOT_FOUND, "C01", "존재하지 않는 챌린지입니다."),
     PARTICIPANTS_COUNT_FULL(BAD_REQUEST, "C02", "챌린지 인원이 가득 찼습니다."),
@@ -19,28 +23,7 @@ public enum ChallengeExceptionType implements BaseExceptionType {
     MIN_PARTICIPANTS_EXCEED_MAX_PARTICIPANTS(BAD_REQUEST, "C09", "최소 참가자 수는 최대 참가자 수보다 작아야 합니다."),
     IMAGES_SIZE_EXCEEDED(BAD_REQUEST, "C10", String.format("이미지는 최대 %d개까지 업로드할 수 있습니다.",
         ChallengeImageUploader.MAX_IMAGE_COUNT));
-    private HttpStatus httpStatus;
-    private String code;
-    private String message;
-
-    ChallengeExceptionType(HttpStatus httpStatus, String code, String message) {
-        this.httpStatus = httpStatus;
-        this.code = code;
-        this.message = message;
-    }
-
-    @Override
-    public HttpStatus getHttpStatus() {
-        return httpStatus;
-    }
-
-    @Override
-    public String getCode() {
-        return code;
-    }
-
-    @Override
-    public String getMessage() {
-        return message;
-    }
+    private final HttpStatus httpStatus;
+    private final String code;
+    private final String message;
 }
