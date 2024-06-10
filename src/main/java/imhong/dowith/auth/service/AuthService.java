@@ -1,7 +1,7 @@
 package imhong.dowith.auth.service;
 
-import static imhong.dowith.member.enums.MemberExceptionType.NICKNAME_DUPLICATED;
-import static imhong.dowith.member.enums.MemberExceptionType.USERID_DUPLICATED;
+import static imhong.dowith.auth.enums.AuthExceptionType.NICKNAME_DUPLICATED;
+import static imhong.dowith.auth.enums.AuthExceptionType.USERID_DUPLICATED;
 
 import imhong.dowith.auth.dto.RegisterRequest;
 import imhong.dowith.common.CustomException;
