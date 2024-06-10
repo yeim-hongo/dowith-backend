@@ -6,9 +6,11 @@ import static org.springframework.http.HttpHeaders.LOCATION;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import imhong.dowith.challenge.domain.Challenge;
 import imhong.dowith.challenge.domain.ChallengeStatus;
+import imhong.dowith.challenge.domain.Image;
 import imhong.dowith.challenge.domain.MemberChallenge;
 import imhong.dowith.challenge.dto.ChallengeCreateRequest;
 import imhong.dowith.challenge.repository.ChallengeRepository;
+import imhong.dowith.challenge.repository.ImageRepository;
 import imhong.dowith.challenge.repository.MemberChallengeRepository;
 import imhong.dowith.common.ControllerTest;
 import imhong.dowith.common.ImageFileGenerator;
@@ -24,7 +26,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 class ChallengeControllerTest extends ControllerTest {
@@ -39,6 +40,9 @@ class ChallengeControllerTest extends ControllerTest {
     private MemberChallengeRepository memberChallengeRepository;
 
     @Autowired
+    private ImageRepository imageRepository;
+
+    @Autowired
     private ObjectMapper objectMapper;
 
     @BeforeEach
@@ -51,10 +55,9 @@ class ChallengeControllerTest extends ControllerTest {
     }
 
     @Test
-    @Transactional
     void createChallenge() throws IOException {
         // given
-        List<MultipartFile> images = List.of(
+        List<MultipartFile> imageFiles = List.of(
             ImageFileGenerator.create("image1"),
             ImageFileGenerator.create("image2", MediaType.IMAGE_PNG_VALUE),
             ImageFileGenerator.create("image2", MediaType.IMAGE_GIF_VALUE)
@@ -65,7 +68,7 @@ class ChallengeControllerTest extends ControllerTest {
             "description",
             "verificationRule",
             thumbnail,
-            images,
+            imageFiles,
             LocalDate.now().plusDays(1),
             LocalDate.now().plusDays(10),
             2,
@@ -83,6 +86,7 @@ class ChallengeControllerTest extends ControllerTest {
         final Long challengeId = ResponseHeaderHelper.getResourceIdFromLocation(
             response.header(LOCATION));
         Challenge challenge = challengeRepository.findById(challengeId).get();
+        List<Image> images = imageRepository.findAllByChallengeId(challengeId);
 
         assertSoftly(softly -> {
                 softly.assertThat(response.header(LOCATION)).isEqualTo("/challenges/" + challengeId);
@@ -92,7 +96,7 @@ class ChallengeControllerTest extends ControllerTest {
                 softly.assertThat(challenge.getStatus()).isEqualTo(ChallengeStatus.NOT_STARTED);
                 softly.assertThat(challenge.getParticipantsCount()).isEqualTo(1);
                 softly.assertThat(challenge.getThumbnailUrl()).isNotEmpty();
-                softly.assertThat(challenge.getImageUrls()).hasSize(images.size());
+                softly.assertThat(images).hasSize(imageFiles.size());
             }
         );
     }
