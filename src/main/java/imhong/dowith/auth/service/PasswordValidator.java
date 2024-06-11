@@ -1,4 +1,4 @@
-package imhong.dowith.member.service;
+package imhong.dowith.auth.service;
 
 import imhong.dowith.common.CustomException;
 import imhong.dowith.member.enums.MemberExceptionType;

@@ -9,7 +9,6 @@ import imhong.dowith.auth.dto.RegisterRequest;
 import imhong.dowith.common.CustomException;
 import imhong.dowith.member.domain.Member;
 import imhong.dowith.member.repository.MemberRepository;
-import imhong.dowith.member.service.PasswordValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
