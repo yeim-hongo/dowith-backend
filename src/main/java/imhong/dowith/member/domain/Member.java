@@ -3,8 +3,6 @@ package imhong.dowith.member.domain;
 import static jakarta.persistence.GenerationType.IDENTITY;
 import static lombok.AccessLevel.PROTECTED;
 
-import imhong.dowith.common.CustomException;
-import imhong.dowith.member.enums.MemberExceptionType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
@@ -36,34 +34,11 @@ public class Member {
     private String password;
 
     public static Member create(String userId, String nickname, String password) {
-        validateUserId(userId);
-        validateNickname(nickname);
-
         return new Member(
             null,
             userId,
             nickname,
             password
         );
-    }
-
-    private static void validateUserId(String userId) {
-        if (userId == null || userId.isEmpty()) {
-            throw new CustomException(MemberExceptionType.USER_ID_EMPTY);
-        }
-
-        if (userId.length() < 4 || userId.length() > 20) {
-            throw new CustomException(MemberExceptionType.USER_ID_LENGTH);
-        }
-    }
-
-    private static void validateNickname(String nickname) {
-        if (nickname == null || nickname.isEmpty()) {
-            throw new CustomException(MemberExceptionType.NICKNAME_EMPTY);
-        }
-
-        if (nickname.length() < 4 || nickname.length() > 20) {
-            throw new CustomException(MemberExceptionType.NICKNAME_LENGTH);
-        }
     }
 }

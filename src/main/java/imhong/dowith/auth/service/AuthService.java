@@ -29,9 +29,7 @@ public class AuthService {
         if (memberRepository.existsByNickname(request.getNickname())) {
             throw new CustomException(NICKNAME_DUPLICATED);
         }
-
-        PasswordValidator.validate(request.getPassword());
-
+        
         String encodedPassword = passwordEncoder.encode(request.getPassword());
         Member member = Member.create(request.getUserId(), request.getNickname(), encodedPassword);
         memberRepository.save(member);
