@@ -29,7 +29,7 @@ public class AuthService {
         if (memberRepository.existsByNickname(request.getNickname())) {
             throw new CustomException(NICKNAME_DUPLICATED);
         }
-        
+
         String encodedPassword = passwordEncoder.encode(request.getPassword());
         Member member = Member.create(request.getUserId(), request.getNickname(), encodedPassword);
         memberRepository.save(member);
@@ -37,6 +37,7 @@ public class AuthService {
         return jwtTokenProvider.generateToken(member.getUserId());
     }
 
+    @Transactional(readOnly = true)
     public String login(LoginRequest request) {
         Member member = memberRepository.findByUserId(request.getUserId())
             .orElseThrow(() -> new CustomException(NOT_AUTHORIZED));
