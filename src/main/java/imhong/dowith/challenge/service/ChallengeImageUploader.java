@@ -5,7 +5,7 @@ import static imhong.dowith.challenge.enums.ChallengeExceptionType.IMAGES_SIZE_E
 import imhong.dowith.challenge.domain.Challenge;
 import imhong.dowith.challenge.domain.Image;
 import imhong.dowith.common.CustomException;
-import imhong.dowith.image.ImageUploader;
+import imhong.dowith.common.image.ImageUploader;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;

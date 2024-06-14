@@ -7,6 +7,8 @@ import static imhong.dowith.auth.enums.AuthExceptionType.USERID_DUPLICATED;
 import imhong.dowith.auth.dto.LoginRequest;
 import imhong.dowith.auth.dto.RegisterRequest;
 import imhong.dowith.common.CustomException;
+import imhong.dowith.common.security.JwtTokenProvider;
+import imhong.dowith.common.security.PasswordEncoder;
 import imhong.dowith.member.domain.Member;
 import imhong.dowith.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;

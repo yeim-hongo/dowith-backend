@@ -1,4 +1,4 @@
-package imhong.dowith.auth.service;
+package imhong.dowith.common.security;
 
 public interface PasswordEncoder {
 

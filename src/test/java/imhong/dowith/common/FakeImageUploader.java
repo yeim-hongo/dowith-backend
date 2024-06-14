@@ -1,6 +1,6 @@
 package imhong.dowith.common;
 
-import imhong.dowith.image.ImageUploader;
+import imhong.dowith.common.image.ImageUploader;
 import java.util.List;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;

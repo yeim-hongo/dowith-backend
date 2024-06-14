@@ -1,4 +1,4 @@
-package imhong.dowith.auth.service;
+package imhong.dowith.common.security;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -25,21 +25,20 @@ public class JwtTokenProvider {
         this.expirationTime = expirationTime;
     }
 
-    public String generateToken(String userId) {
+    public String generateToken(String subject) {
         return Jwts.builder()
-            .setSubject(userId)
+            .setSubject(subject)
             .setExpiration(new Date(System.currentTimeMillis() + expirationTime))
             .signWith(key, SignatureAlgorithm.HS256)
             .compact();
     }
 
-    public String getUserIdFromToken(String token) {
+    public String getSubjectFromToken(String token) {
         Claims claims = Jwts.parserBuilder()
             .setSigningKey(key)
             .build()
             .parseClaimsJws(token)
             .getBody();
-
         return claims.getSubject();
     }
 

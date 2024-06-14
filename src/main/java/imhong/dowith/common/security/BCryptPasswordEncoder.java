@@ -1,4 +1,4 @@
-package imhong.dowith.auth.service;
+package imhong.dowith.common.security;
 
 import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.beans.factory.annotation.Value;
