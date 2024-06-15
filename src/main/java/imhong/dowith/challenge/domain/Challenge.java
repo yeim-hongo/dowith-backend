@@ -1,17 +1,17 @@
 package imhong.dowith.challenge.domain;
 
-import static imhong.dowith.challenge.exception.ChallengeExceptionType.CHALLENGE_START_DATE_TOO_FAR;
-import static imhong.dowith.challenge.exception.ChallengeExceptionType.END_DATE_BEFORE_START_DATE;
-import static imhong.dowith.challenge.exception.ChallengeExceptionType.INVALID_DURATION;
-import static imhong.dowith.challenge.exception.ChallengeExceptionType.INVALID_MAX_PARTICIPANTS_COUNT;
-import static imhong.dowith.challenge.exception.ChallengeExceptionType.INVALID_MIN_PARTICIPANTS_COUNT;
-import static imhong.dowith.challenge.exception.ChallengeExceptionType.MIN_PARTICIPANTS_EXCEED_MAX_PARTICIPANTS;
-import static imhong.dowith.challenge.exception.ChallengeExceptionType.START_DATE_BEFORE_TODAY;
+import static imhong.dowith.challenge.enums.ChallengeExceptionType.CHALLENGE_START_DATE_TOO_FAR;
+import static imhong.dowith.challenge.enums.ChallengeExceptionType.END_DATE_BEFORE_START_DATE;
+import static imhong.dowith.challenge.enums.ChallengeExceptionType.INVALID_DURATION;
+import static imhong.dowith.challenge.enums.ChallengeExceptionType.INVALID_MAX_PARTICIPANTS_COUNT;
+import static imhong.dowith.challenge.enums.ChallengeExceptionType.INVALID_MIN_PARTICIPANTS_COUNT;
+import static imhong.dowith.challenge.enums.ChallengeExceptionType.MIN_PARTICIPANTS_EXCEED_MAX_PARTICIPANTS;
+import static imhong.dowith.challenge.enums.ChallengeExceptionType.START_DATE_BEFORE_TODAY;
 import static jakarta.persistence.EnumType.STRING;
 import static jakarta.persistence.GenerationType.IDENTITY;
 import static lombok.AccessLevel.PROTECTED;
 
-import imhong.dowith.challenge.exception.ChallengeException;
+import imhong.dowith.common.CustomException;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
@@ -122,34 +122,34 @@ public class Challenge {
 
     private static void validateDuration(LocalDate startDate, LocalDate endDate) {
         if (endDate.isBefore(startDate)) {
-            throw new ChallengeException(END_DATE_BEFORE_START_DATE);
+            throw new CustomException(END_DATE_BEFORE_START_DATE);
         }
 
         if (startDate.plusWeeks(4).isBefore(endDate)) {
-            throw new ChallengeException(INVALID_DURATION);
+            throw new CustomException(INVALID_DURATION);
         }
 
         if (startDate.isBefore(LocalDate.now())) {
-            throw new ChallengeException(START_DATE_BEFORE_TODAY);
+            throw new CustomException(START_DATE_BEFORE_TODAY);
         }
 
         if (startDate.isAfter(LocalDate.now().plusWeeks(4))) {
-            throw new ChallengeException(CHALLENGE_START_DATE_TOO_FAR);
+            throw new CustomException(CHALLENGE_START_DATE_TOO_FAR);
         }
     }
 
     private static void validateParticipantsCount(Integer minParticipantsCount,
         Integer maxParticipantsCount) {
         if (minParticipantsCount < 1) {
-            throw new ChallengeException(INVALID_MIN_PARTICIPANTS_COUNT);
+            throw new CustomException(INVALID_MIN_PARTICIPANTS_COUNT);
         }
 
         if (maxParticipantsCount > 100) {
-            throw new ChallengeException(INVALID_MAX_PARTICIPANTS_COUNT);
+            throw new CustomException(INVALID_MAX_PARTICIPANTS_COUNT);
         }
 
         if (minParticipantsCount > maxParticipantsCount) {
-            throw new ChallengeException(MIN_PARTICIPANTS_EXCEED_MAX_PARTICIPANTS);
+            throw new CustomException(MIN_PARTICIPANTS_EXCEED_MAX_PARTICIPANTS);
         }
     }
 

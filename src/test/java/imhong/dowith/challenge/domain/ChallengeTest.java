@@ -1,15 +1,15 @@
 package imhong.dowith.challenge.domain;
 
-import static imhong.dowith.challenge.exception.ChallengeExceptionType.CHALLENGE_START_DATE_TOO_FAR;
-import static imhong.dowith.challenge.exception.ChallengeExceptionType.END_DATE_BEFORE_START_DATE;
-import static imhong.dowith.challenge.exception.ChallengeExceptionType.INVALID_DURATION;
-import static imhong.dowith.challenge.exception.ChallengeExceptionType.INVALID_MAX_PARTICIPANTS_COUNT;
-import static imhong.dowith.challenge.exception.ChallengeExceptionType.INVALID_MIN_PARTICIPANTS_COUNT;
-import static imhong.dowith.challenge.exception.ChallengeExceptionType.MIN_PARTICIPANTS_EXCEED_MAX_PARTICIPANTS;
+import static imhong.dowith.challenge.enums.ChallengeExceptionType.CHALLENGE_START_DATE_TOO_FAR;
+import static imhong.dowith.challenge.enums.ChallengeExceptionType.END_DATE_BEFORE_START_DATE;
+import static imhong.dowith.challenge.enums.ChallengeExceptionType.INVALID_DURATION;
+import static imhong.dowith.challenge.enums.ChallengeExceptionType.INVALID_MAX_PARTICIPANTS_COUNT;
+import static imhong.dowith.challenge.enums.ChallengeExceptionType.INVALID_MIN_PARTICIPANTS_COUNT;
+import static imhong.dowith.challenge.enums.ChallengeExceptionType.MIN_PARTICIPANTS_EXCEED_MAX_PARTICIPANTS;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-import imhong.dowith.challenge.exception.ChallengeException;
+import imhong.dowith.common.CustomException;
 import java.time.LocalDate;
 import org.junit.jupiter.api.Test;
 
@@ -24,7 +24,7 @@ class ChallengeTest {
         // when & then
         assertThatThrownBy(() -> createByStartDateAndEndDate(startDate, endDate))
             .satisfies(exception -> {
-                ChallengeException challengeException = (ChallengeException) exception;
+                CustomException challengeException = (CustomException) exception;
                 assertThat(challengeException.getExceptionType()).isEqualTo(
                     END_DATE_BEFORE_START_DATE);
             });
@@ -39,7 +39,7 @@ class ChallengeTest {
         // when & then
         assertThatThrownBy(() -> createByStartDateAndEndDate(startDate, endDate))
             .satisfies(exception -> {
-                ChallengeException challengeException = (ChallengeException) exception;
+                CustomException challengeException = (CustomException) exception;
                 assertThat(challengeException.getExceptionType()).isEqualTo(
                     INVALID_DURATION);
             });
@@ -54,7 +54,7 @@ class ChallengeTest {
         // when & then
         assertThatThrownBy(() -> createByStartDateAndEndDate(startDate, endDate))
             .satisfies(exception -> {
-                ChallengeException challengeException = (ChallengeException) exception;
+                CustomException challengeException = (CustomException) exception;
                 assertThat(challengeException.getExceptionType()).isEqualTo(
                     END_DATE_BEFORE_START_DATE);
             });
@@ -69,7 +69,7 @@ class ChallengeTest {
         // when & then
         assertThatThrownBy(() -> createByStartDateAndEndDate(startDate, endDate))
             .satisfies(exception -> {
-                ChallengeException challengeException = (ChallengeException) exception;
+                CustomException challengeException = (CustomException) exception;
                 assertThat(challengeException.getExceptionType()).isEqualTo(
                     CHALLENGE_START_DATE_TOO_FAR);
             });
@@ -83,7 +83,7 @@ class ChallengeTest {
         // when & then
         assertThatThrownBy(() -> createByMinAndMaxParticipantsCount(minParticipantsCount, 10))
             .satisfies(exception -> {
-                ChallengeException challengeException = (ChallengeException) exception;
+                CustomException challengeException = (CustomException) exception;
                 assertThat(challengeException.getExceptionType()).isEqualTo(
                     INVALID_MIN_PARTICIPANTS_COUNT);
             });
@@ -97,7 +97,7 @@ class ChallengeTest {
         // when & then
         assertThatThrownBy(() -> createByMinAndMaxParticipantsCount(1, maxParticipantsCount))
             .satisfies(exception -> {
-                ChallengeException challengeException = (ChallengeException) exception;
+                CustomException challengeException = (CustomException) exception;
                 assertThat(challengeException.getExceptionType()).isEqualTo(
                     INVALID_MAX_PARTICIPANTS_COUNT);
             });
@@ -113,7 +113,7 @@ class ChallengeTest {
         assertThatThrownBy(
             () -> createByMinAndMaxParticipantsCount(minParticipantsCount, maxParticipantsCount))
             .satisfies(exception -> {
-                ChallengeException challengeException = (ChallengeException) exception;
+                CustomException challengeException = (CustomException) exception;
                 assertThat(challengeException.getExceptionType()).isEqualTo(
                     MIN_PARTICIPANTS_EXCEED_MAX_PARTICIPANTS);
             });

@@ -3,6 +3,7 @@ package imhong.dowith.member.domain;
 import static jakarta.persistence.GenerationType.IDENTITY;
 import static lombok.AccessLevel.PROTECTED;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.GeneratedValue;
@@ -22,8 +23,14 @@ public class Member {
     @Id
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
+
+    @Column(nullable = false, length = 20)
     private String userId;
+
+    @Column(nullable = false, length = 20)
     private String nickname;
+
+    @Column(nullable = false, length = 60)
     private String password;
 
     public static Member create(String userId, String nickname, String password) {

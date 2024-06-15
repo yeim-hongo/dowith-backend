@@ -15,9 +15,9 @@ public class ControllerAdvice {
 
     private final Logger log = LoggerFactory.getLogger(ControllerAdvice.class);
 
-    @ExceptionHandler(BaseException.class)
+    @ExceptionHandler(CustomException.class)
     public ResponseEntity<ExceptionResponse> handleBaseException(HttpServletRequest request,
-        BaseException e) {
+        CustomException e) {
         log.warn("잘못된 요청이 들어왔습니다. URI: {}, 코드: {}, 내용:  {}", request.getRequestURI(), e.getCode(),
             e.getMessage());
         return ResponseEntity.status(e.getHttpStatus()).body(

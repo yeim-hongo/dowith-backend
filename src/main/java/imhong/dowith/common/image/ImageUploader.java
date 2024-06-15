@@ -1,4 +1,4 @@
-package imhong.dowith.image;
+package imhong.dowith.common.image;
 
 import java.util.List;
 import org.springframework.web.multipart.MultipartFile;

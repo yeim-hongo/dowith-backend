@@ -1,11 +1,11 @@
 package imhong.dowith.challenge.service;
 
-import static imhong.dowith.challenge.exception.ChallengeExceptionType.IMAGES_SIZE_EXCEEDED;
+import static imhong.dowith.challenge.enums.ChallengeExceptionType.IMAGES_SIZE_EXCEEDED;
 
 import imhong.dowith.challenge.domain.Challenge;
 import imhong.dowith.challenge.domain.Image;
-import imhong.dowith.challenge.exception.ChallengeException;
-import imhong.dowith.image.ImageUploader;
+import imhong.dowith.common.CustomException;
+import imhong.dowith.common.image.ImageUploader;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -25,7 +25,7 @@ public class ChallengeImageUploader {
 
     public List<Image> uploadImages(List<MultipartFile> images, Challenge challenge) {
         if (images.size() > MAX_IMAGE_COUNT) {
-            throw new ChallengeException(IMAGES_SIZE_EXCEEDED);
+            throw new CustomException(IMAGES_SIZE_EXCEEDED);
         }
 
         return imageUploader.uploadAll(images).stream()
