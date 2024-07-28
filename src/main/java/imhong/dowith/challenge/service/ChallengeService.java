@@ -5,16 +5,21 @@ import static imhong.dowith.challenge.enums.ChallengeExceptionType.CHALLENGE_NOT
 import static imhong.dowith.challenge.enums.ChallengeExceptionType.PARTICIPANTS_COUNT_FULL;
 
 import imhong.dowith.challenge.domain.Challenge;
+import imhong.dowith.challenge.domain.ChallengeStatus;
 import imhong.dowith.challenge.domain.MemberChallenge;
 import imhong.dowith.challenge.dto.ChallengeCreateRequest;
+import imhong.dowith.challenge.dto.ChallengeResponse;
 import imhong.dowith.challenge.repository.ChallengeRepository;
 import imhong.dowith.challenge.repository.ImageRepository;
 import imhong.dowith.challenge.repository.MemberChallengeRepository;
 import imhong.dowith.common.CustomException;
 import imhong.dowith.member.domain.Member;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 @Transactional
@@ -51,7 +56,7 @@ public class ChallengeService {
 
     public void participate(Member participant, Long challengeId) {
         Challenge challenge = challengeRepository.findById(challengeId)
-            .orElseThrow(() -> new CustomException(CHALLENGE_NOT_FOUND));
+                .orElseThrow(() -> new CustomException(CHALLENGE_NOT_FOUND));
 
         if (challenge.isFull()) {
             throw new CustomException(PARTICIPANTS_COUNT_FULL);
@@ -59,6 +64,18 @@ public class ChallengeService {
         challenge.increaseParticipantsCount();
         challengeRepository.save(challenge);
         memberChallengeRepository.save(
-            MemberChallenge.createParticipant(participant.getId(), challengeId));
+                MemberChallenge.createParticipant(participant.getId(), challengeId));
+    }
+
+    public List<ChallengeResponse> getChallenges(String status, Pageable pageable) {
+        if (status == null) {
+            return challengeRepository.findAllSlice(pageable)
+                    .map(ChallengeResponse::from)
+                    .toList();
+        }
+
+        return challengeRepository.findAllByStatus(ChallengeStatus.valueOf(status), pageable)
+                .map(ChallengeResponse::from)
+                .toList();
     }
 }
