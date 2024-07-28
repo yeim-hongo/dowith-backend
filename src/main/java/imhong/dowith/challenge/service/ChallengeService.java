@@ -28,21 +28,24 @@ public class ChallengeService {
 
     public Long createChallenge(Member leader, ChallengeCreateRequest request) {
         // TODO ImageUploader를 트랜잭션에서 분리
+        String thumbnailUrl = request.getThumbnail() == null ? null : imageUploader.uploadThumbnail(request.getThumbnail());
         Challenge challenge = Challenge.create(
-            request.getTitle(),
-            request.getDescription(),
-            request.getVerificationRule(),
-            imageUploader.uploadThumbnail(request.getThumbnail()),
-            request.getStartDate(),
-            request.getEndDate(),
-            request.getMinParticipantsCount(),
-            request.getMaxParticipantsCount(),
-            leader.getId()
+                request.getTitle(),
+                request.getDescription(),
+                request.getVerificationRule(),
+                thumbnailUrl,
+                request.getStartDate(),
+                request.getEndDate(),
+                request.getMinParticipantsCount(),
+                request.getMaxParticipantsCount(),
+                leader.getId()
         );
         Challenge savedChallenge = challengeRepository.save(challenge);
-        imageRepository.saveAll(imageUploader.uploadImages(request.getImages(), savedChallenge));
+        if (request.getImages() != null) {
+            imageRepository.saveAll(imageUploader.uploadImages(request.getImages(), savedChallenge));
+        }
         memberChallengeRepository.save(
-            MemberChallenge.createLeader(leader.getId(), savedChallenge.getId()));
+                MemberChallenge.createLeader(leader.getId(), savedChallenge.getId()));
         return savedChallenge.getId();
     }
 
