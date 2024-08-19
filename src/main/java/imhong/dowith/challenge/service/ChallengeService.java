@@ -5,16 +5,21 @@ import static imhong.dowith.challenge.enums.ChallengeExceptionType.CHALLENGE_NOT
 import static imhong.dowith.challenge.enums.ChallengeExceptionType.PARTICIPANTS_COUNT_FULL;
 
 import imhong.dowith.challenge.domain.Challenge;
+import imhong.dowith.challenge.domain.ChallengeStatus;
 import imhong.dowith.challenge.domain.MemberChallenge;
 import imhong.dowith.challenge.dto.ChallengeCreateRequest;
+import imhong.dowith.challenge.dto.ChallengeResponse;
 import imhong.dowith.challenge.repository.ChallengeRepository;
 import imhong.dowith.challenge.repository.ImageRepository;
 import imhong.dowith.challenge.repository.MemberChallengeRepository;
 import imhong.dowith.common.CustomException;
 import imhong.dowith.member.domain.Member;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 @Transactional
@@ -28,27 +33,30 @@ public class ChallengeService {
 
     public Long createChallenge(Member leader, ChallengeCreateRequest request) {
         // TODO ImageUploader를 트랜잭션에서 분리
+        String thumbnailUrl = request.getThumbnail() == null ? null : imageUploader.uploadThumbnail(request.getThumbnail());
         Challenge challenge = Challenge.create(
-            request.getTitle(),
-            request.getDescription(),
-            request.getVerificationRule(),
-            imageUploader.uploadThumbnail(request.getThumbnail()),
-            request.getStartDate(),
-            request.getEndDate(),
-            request.getMinParticipantsCount(),
-            request.getMaxParticipantsCount(),
-            leader.getId()
+                request.getTitle(),
+                request.getDescription(),
+                request.getVerificationRule(),
+                thumbnailUrl,
+                request.getStartDate(),
+                request.getEndDate(),
+                request.getMinParticipantsCount(),
+                request.getMaxParticipantsCount(),
+                leader.getId()
         );
         Challenge savedChallenge = challengeRepository.save(challenge);
-        imageRepository.saveAll(imageUploader.uploadImages(request.getImages(), savedChallenge));
+        if (request.getImages() != null) {
+            imageRepository.saveAll(imageUploader.uploadImages(request.getImages(), savedChallenge));
+        }
         memberChallengeRepository.save(
-            MemberChallenge.createLeader(leader.getId(), savedChallenge.getId()));
+                MemberChallenge.createLeader(leader.getId(), savedChallenge.getId()));
         return savedChallenge.getId();
     }
 
     public void participate(Member participant, Long challengeId) {
         Challenge challenge = challengeRepository.findById(challengeId)
-            .orElseThrow(() -> new CustomException(CHALLENGE_NOT_FOUND));
+                .orElseThrow(() -> new CustomException(CHALLENGE_NOT_FOUND));
 
         if (challenge.isFull()) {
             throw new CustomException(PARTICIPANTS_COUNT_FULL);
@@ -56,6 +64,18 @@ public class ChallengeService {
         challenge.increaseParticipantsCount();
         challengeRepository.save(challenge);
         memberChallengeRepository.save(
-            MemberChallenge.createParticipant(participant.getId(), challengeId));
+                MemberChallenge.createParticipant(participant.getId(), challengeId));
+    }
+
+    public List<ChallengeResponse> getChallenges(String status, Pageable pageable) {
+        if (status == null) {
+            return challengeRepository.findAllSlice(pageable)
+                    .map(ChallengeResponse::from)
+                    .toList();
+        }
+
+        return challengeRepository.findAllByStatus(ChallengeStatus.valueOf(status), pageable)
+                .map(ChallengeResponse::from)
+                .toList();
     }
 }
